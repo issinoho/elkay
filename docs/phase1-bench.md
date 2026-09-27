@@ -15,7 +15,7 @@ Record every result in the table at the end and commit it.
   supply. The MT3608 is kept for the final box.
 - An RJ10 (4P4C) female-to-female coupler, 1:1 wiring
 - An RJ10 plug-to-plug flat cable with one end cut off and the four wires stripped
-- Jumper wires; a 100 Ω resistor
+- A breadboard or terminal block for the flat cable's wires; jumper wires
 
 The setup is: LK401 plug → coupler → flat cable → four bare wires.
 
@@ -30,22 +30,25 @@ The setup is: LK401 plug → coupler → flat cable → four bare wires.
 
 ## 2. Find ground and +12 V (keyboard unpowered)
 
-The two supply pins can be found with the keyboard unpowered, by measuring resistance.
+The keyboard is not opened and its cable is not touched: its plug sits in the coupler exactly
+as it would in a terminal. Everything is measured on the cut end of our own flat cable.
 
-1. Plug the LK401's plug into the coupler and the flat cable into its other side. Label the
-   four bare wires A–D by colour. Don't assume pin numbers: the flat cable is probably
-   reversed.
-2. Open the keyboard (screws on the underside) and find the 4P4C socket and the voltage
-   regulator next to it: a three-legged part, probably a 7805 or similar. Note which leg is the
-   input, ground and output (for a 7805: input, ground, output, left to right from the front).
-3. Continuity mode: find the wire connected to the regulator's **ground** leg. That pin
-   is **GND**.
-4. Find the pin connected to the regulator's **input** leg, possibly through a diode or fuse,
-   so use resistance mode if continuity doesn't beep. That pin is **+12 V**.
-5. If the keyboard can't be opened, skip to the fallback in step 3.
-
-The two remaining pins are the data lines. `lkkbd.c` says the order is `1 RX-in, 2 GND,
-3 +12 V, 4 TX-out`, but the cable may reverse it.
+1. Plug the LK401's plug into the coupler and the flat cable into its other side. Push the four
+   bare wires into a breadboard or terminal block so none can touch, and label them A–D by
+   colour. Don't assume pin numbers: the flat cable is probably reversed.
+2. Per `lkkbd.c` the order is `1 RX-in, 2 GND, 3 +12 V, 4 TX-out`. A reversed cable only flips
+   it end to end, so the **two middle wires are the supply** and the two outer wires are data.
+   Check this in the next steps rather than trusting it.
+3. Meter in **diode-test** mode. It drives about 1 mA at 2–3 V, harmless to the keyboard.
+   Measure between the two middle wires, then swap the probes:
+   - **red on +12 V, black on GND:** the reading climbs and ends at OL, as the meter charges
+     the keyboard's supply capacitor;
+   - **red on GND, black on +12 V:** a steady 0.4–0.7 V through the protection diodes of the
+     keyboard's chips.
+4. Red probe on GND, black probe on each outer wire in turn: each should show a diode drop
+   (a signal line), not 0 (a short) or OL (not connected).
+5. If the middle wires don't behave like this, stop and record every pair's readings in both
+   directions before powering anything.
 
 ## 3. Power up and measure current
 
@@ -55,10 +58,6 @@ The two remaining pins are the data lines. `lkkbd.c` says the order is `1 RX-in,
 3. Record the current at idle, the **peak** as the LEDs flash, and the current with keys held.
 4. If the supply's display blanks or the keyboard keeps restarting, the supply is hitting its
    3 W limit (about 250 mA at 12 V). Note it; the final MT3608 has more headroom.
-
-*Fallback if the supply pins are still unknown:* put a 100 Ω resistor in series with the
-+12 V feed. It limits the current enough to protect the keyboard while you try pin
-combinations. Take it out once the pins are confirmed.
 
 ## 4. Identify the data pins and their levels
 
@@ -87,8 +86,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | Current, keys held | |
 | TX idle voltage | |
 | TX voltage with a key held | |
-| Regulator part number | |
-| Anything else seen inside | |
+| Diode test, +12 V → GND (red → black) | |
+| Diode test, GND → +12 V | |
+| Diode test, GND → each data wire | |
 
 With these, the interface circuit in [hardware/README.md](../hardware/README.md) can be
 confirmed and the power budget checked: USB 2.0 gives 500 mA at 5 V, and the boost module turns
