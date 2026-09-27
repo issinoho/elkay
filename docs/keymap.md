@@ -25,6 +25,9 @@ until Phase 3 checks it on the real keyboard.
 | `7D` | Do | F16 `6B` | do ⚠ |
 | `80`–`83` | F17–F20 | F17–F20 `6C`–`6F` | f17–f20 ⚠ |
 
+⚠ On Linux these need the xkb option `elkay:fkeys`; see
+[host/linux/README.md](../host/linux/README.md). Windows needs nothing.
+
 ## Editing and cursor keys
 
 | LK | LK401 key | HID usage | veetee |
@@ -48,7 +51,7 @@ until Phase 3 checks it on the real keyboard.
 | `A2` | PF2 | KP / `54` | pf2 |
 | `A3` | PF3 | KP * `55` | pf3 |
 | `A4` | PF4 | KP − `56` | pf4 |
-| `A0` | KP − | KP = `67` | **needs binding** `KP_Equal → kp-minus` |
+| `A0` | KP − | KP = `67` | kp-minus (veetee after 1.7.0) |
 | `9C` | KP , | KP + `57` | kp-comma |
 | `95` | Enter | KP Enter `58` | kp-enter |
 | `94` | KP . | KP . `63` | kp-period |
@@ -70,8 +73,8 @@ The HID Keypad Comma usage (`85`) would be the obvious choice for KP `,`, but xk
 | `B0` | Lock | Caps Lock `39` | Lock LED follows the host's Caps Lock |
 | `AC` | Alt Function (left) | Left Alt `E2` | LK401 mode only |
 | `B2` | Alt Function (right) | Right Alt `E6` | LK401 mode only |
-| `B1` | Compose Character (left) | **open** | see below |
-| `AD` | Compose Character (right) | **open** | LK401 mode only |
+| `B1` | Compose Character (left) | Menu `65` | proposed; GNOME Compose Key = Menu |
+| `AD` | Compose Character (right) | Menu `65` | LK401 mode only |
 | `BC` | `<X]` | Backspace `2A` | veetee: delete |
 | `BD` | Return | Enter `28` | |
 | `BE` | Tab | Tab `2B` | |
@@ -103,15 +106,10 @@ The HID Keypad Comma usage (`85`) would be the obvious choice for KP `,`, but xk
 
 ## Open questions
 
-1. **F13–F20 on Linux.** xkb's default `inet` symbols turn HID F13–F18 into `XF86Tools` and
-   `XF86Launch5`–`9`, and F20 into `XF86AudioMicMute`, so under GNOME F20 would mute the
-   microphone. No choice of HID usage avoids this. Fix it in veetee: match these keys by
-   hardware keycode (as `station_for_keycode` already does for the main keypad), or accept the
-   XF86 names as aliases. Windows passes F13–F24 through unchanged.
-2. **KP −.** Needs one new veetee binding, `KP_Equal → kp-minus`.
-3. **Compose Character.** Candidates: Menu (`65`), Right GUI (`E7`), or xkb's Multi_key via an
-   xkb option. It depends on what veetee should do with Compose.
-4. **No Esc key.** DEC-faithful behaviour is F11. Optionally, a converter layer could make
+1. **Compose Character.** Proposed: Menu (`65`). veetee's default Compose setting is Local
+   Compose, which on a Linux desktop means the input method's compose. GNOME can use Menu as
+   its Compose key (Settings → Keyboard → Compose Key), so no veetee change is needed.
+2. **No Esc key.** DEC-faithful behaviour is F11. Optionally, a converter layer could make
    F11 send Esc for desktop use.
-5. **PF1 is Num Lock.** Pressing it toggles the host's Num Lock state. veetee binds both keypad
+3. **PF1 is Num Lock.** Pressing it toggles the host's Num Lock state. veetee binds both keypad
    states, so it is harmless there, but other applications will see the keypad change.

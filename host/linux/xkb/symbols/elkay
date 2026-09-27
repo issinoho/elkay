@@ -1,0 +1,18 @@
+// elkay: DEC LK401 keys on a Linux desktop.
+//
+// xkb's default "inet" symbols turn F13-F18 into XF86Tools and XF86Launch5-9,
+// leave F19 without a symbol and turn F20 into XF86AudioMicMute; GNOME then
+// opens Settings on F13 and mutes the microphone on F20. The LK401 labels
+// these keys F13-F20, so give them those keysyms back.
+
+partial function_keys
+xkb_symbols "fkeys" {
+    key <FK13> { [ F13 ] };
+    key <FK14> { [ F14 ] };
+    key <FK15> { [ F15 ] };
+    key <FK16> { [ F16 ] };
+    key <FK17> { [ F17 ] };
+    key <FK18> { [ F18 ] };
+    key <FK19> { [ F19 ] };
+    key <FK20> { [ F20 ] };
+};

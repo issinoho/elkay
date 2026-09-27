@@ -1,0 +1,9 @@
+// elkay: adds the option elkay:fkeys to the system's evdev rules.
+//
+// The include comes first: rules apply in file order, and the option has to
+// land after the base layout's inet(evdev) symbols to override them.
+
+! include %S/evdev
+
+! option = symbols
+  elkay:fkeys = +elkay(fkeys)

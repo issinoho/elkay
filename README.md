@@ -24,7 +24,7 @@ LK401 ──4P4C──▶ ┌──────────────── el
 | 3 | Firmware: serial sniffer and command console, record every keycode | written, untested |
 | 4 | Firmware: initialisation (LK401 mode, up/down modes, LEDs, click, bell) | console commands in place |
 | 5 | Firmware: USB HID keyboard with LED feedback | — |
-| 6 | Keymap for veetee ([keymap](docs/keymap.md)) | proposed |
+| 6 | Keymap for veetee ([keymap](docs/keymap.md)); veetee and Linux host side done | proposed |
 | 7 | Enclosure, testing, write-up | — |
 
 ## Layout
@@ -36,6 +36,7 @@ LK401 ──4P4C──▶ ┌──────────────── el
 | `docs/protocol.md` | The LK201/LK401 protocol as the firmware uses it |
 | `docs/keymap.md` | LK401 keycode → USB HID usage → veetee binding |
 | `docs/phase1-bench.md` | Bench procedure for identifying the connector and signals |
+| `host/linux/` | xkb option so Linux desktops see F13–F20 ([why](host/linux/README.md)) |
 
 ## Building
 
