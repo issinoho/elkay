@@ -136,6 +136,9 @@ void setup() {
   pinMode(kActivityLed, OUTPUT);
   Serial.begin(kConsoleBaud);
   Serial1.begin(lk::kBaud);
+  // Hold RX at idle when nothing drives it, so an unconnected input does not
+  // read noise as bytes. The UART still owns the pin; this only sets the pull-up.
+  pinMode(0, INPUT_PULLUP);
   printHelp();
 }
 
