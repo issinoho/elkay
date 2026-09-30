@@ -34,14 +34,38 @@ The setup is: LK401 plug → coupler → flat cable → four bare wires.
 A multimeter with a weak battery can read high and drift. An apparent upward creep of about
 0.8 V turned out to be exactly that. If readings wander, change the meter battery first.
 
-## 2. Find ground and +12 V (keyboard unpowered)
+## 2. Map the flat cable (no keyboard needed)
+
+This finds which bare wire goes to which pin, so the colours found in section 3 can be checked
+against the pin order in `lkkbd.c`. The keyboard is not involved.
+
+Pins are numbered as in [protocol.md](protocol.md): hold the plug with the cable downwards, the
+latch away from you and the contacts facing you. Pins 1–4 then run from left to right.
+
+1. Meter on **continuity** (beeper), or the lowest Ω range.
+2. For each plug contact 1–4 in turn, hold a probe tip on the contact's gold edge and touch the
+   other probe to each bare wire until it beeps. Record the colour. Each contact should connect
+   to exactly one wire, reading under about 1 Ω.
+3. Check for shorts: probe each of the six pairs of bare wires. All should read OL.
+
+Once the coupler has arrived, map through it too, before the keyboard is plugged in:
+
+4. Plug the flat cable into one side of the coupler. Look into the empty side with the latch
+   slot at the top. The contacts are along the bottom, and pin 1 is on the **right**, because a
+   socket is the mirror image of a plug. The keyboard's pin 1 will land on that contact.
+5. Meter probes are too thick for the socket, so hold a jumper wire's male pin against one
+   probe and use it as a fine tip. Touch each socket contact and find its bare wire, as in
+   step 2. Record the colours. This maps each keyboard pin to a colour, and shows whether the
+   coupler is straight or crossed.
+
+## 3. Find ground and +12 V (keyboard unpowered)
 
 The keyboard is not opened and its cable is not touched: its plug sits in the coupler exactly
 as it would in a terminal. Everything is measured on the cut end of our own flat cable.
 
 1. Plug the LK401's plug into the coupler and the flat cable into its other side. Push the four
-   bare wires into a breadboard or terminal block so none can touch, and label them A–D by
-   colour. Don't assume pin numbers: the flat cable is probably reversed.
+   bare wires into a breadboard or terminal block so none can touch. Label each wire with its
+   colour and the keyboard pin section 2 mapped it to.
 2. Per `lkkbd.c` the order is `1 RX-in, 2 GND, 3 +12 V, 4 TX-out`. A reversed cable only flips
    it end to end, so the **two middle wires are the supply** and the two outer wires are data.
    Check this in the next steps rather than trusting it.
@@ -56,7 +80,7 @@ as it would in a terminal. Everything is measured on the cut end of our own flat
 5. If the middle wires don't behave like this, stop and record every pair's readings in both
    directions before powering anything.
 
-## 3. Power up and measure current
+## 4. Power up and measure current
 
 1. Put the multimeter in **DC current (mA)** mode, in series between the supply's +12 V
    output and the +12 V pin. Connect the supply's ground to the GND pin.
@@ -65,7 +89,7 @@ as it would in a terminal. Everything is measured on the cut end of our own flat
 4. If the supply's display blanks or the keyboard keeps restarting, the supply is hitting its
    3 W limit (about 250 mA at 12 V). Note it; the final MT3608 has more headroom.
 
-## 4. Identify the data pins and their levels
+## 5. Identify the data pins and their levels
 
 Keyboard powered, multimeter in DC volts, black probe on GND:
 
@@ -85,6 +109,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 |-------------|-------|
 | Supply display offset | display 12.4 V = meter 12.0 V (1 kΩ load) |
 | Supply drift, 1 kΩ load | holds 12.0 V (step 5 passed) |
+| Flat cable plug, pins 1–4 (colours) | |
+| Through coupler, keyboard pins 1–4 (colours) | |
+| Coupler wiring (straight / crossed) | |
 | GND wire (colour) | |
 | +12 V wire | |
 | Keyboard TX wire | |
