@@ -27,6 +27,12 @@ The setup is: LK401 plug → coupler → flat cable → four bare wires.
 3. Turn the trimmer (clockwise raises it) until the **multimeter** reads **12.0 V**. The
    module's own display can be a few tenths out. Too much voltage can damage the keyboard.
 4. Unplug it again.
+5. **Before the first power-up, do the load test.** Put a 1 kΩ resistor across the output for
+   5 minutes. If it holds steady, re-set it to 12.0 V with the resistor in place. If it keeps
+   climbing, don't use it on the keyboard until that is understood.
+
+A multimeter with a weak battery can read high and drift. An apparent upward creep of about
+0.8 V turned out to be exactly that. If readings wander, change the meter battery first.
 
 ## 2. Find ground and +12 V (keyboard unpowered)
 
@@ -77,6 +83,8 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 
 | Measurement | Value |
 |-------------|-------|
+| Supply display offset | display 12.4 V = meter 12.0 V (1 kΩ load) |
+| Supply drift, 1 kΩ load | holds 12.0 V (step 5 passed) |
 | GND wire (colour) | |
 | +12 V wire | |
 | Keyboard TX wire | |
