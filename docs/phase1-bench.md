@@ -75,9 +75,12 @@ as it would in a terminal. Everything is measured on the cut end of our own flat
      the keyboard's supply capacitor;
    - **red on GND, black on +12 V:** a steady 0.4–0.7 V through the protection diodes of the
      keyboard's chips.
-4. Red probe on GND, black probe on each outer wire in turn: each should show a diode drop
-   (a signal line), not 0 (a short) or OL (not connected).
-5. If the middle wires don't behave like this, stop and record every pair's readings in both
+4. Red probe on GND, black probe on each outer wire in turn. The keyboard's output (pin 4)
+   should show a diode drop. Its input (pin 1) may read OL: on our keyboard it read OL to every
+   other pin in both directions, in diode test and on the 20 MΩ range. Whether that is a
+   high-impedance input or an open wire is settled when the keyboard is first sent a command
+   (**verify**). A reading of 0 on any data wire is a short: stop.
+5. If the middle wires don't behave as in step 3, stop and record every pair's readings in both
    directions before powering anything.
 
 ## 4. Power up and measure current
@@ -109,11 +112,12 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 |-------------|-------|
 | Supply display offset | display 12.4 V = meter 12.0 V (1 kΩ load) |
 | Supply drift, 1 kΩ load | holds 12.0 V (step 5 passed) |
-| Flat cable plug, pins 1–4 (colours) | |
-| Through coupler, keyboard pins 1–4 (colours) | |
-| Coupler wiring (straight / crossed) | |
-| GND wire (colour) | |
-| +12 V wire | |
+| Flat cable plug, pins 1–4 (colours) | 1 yellow, 2 green, 3 red, 4 black; no shorts between wires |
+| Through coupler, keyboard pins 1–4 (colours) | 1 yellow, 2 green, 3 red, 4 black |
+| Coupler wiring (straight / crossed) | straight |
+| Pin 1 (yellow) resistance | OL to every other pin, both directions, on 20 MΩ |
+| GND wire (colour) | green (keyboard pin 2) |
+| +12 V wire | red (keyboard pin 3) |
 | Keyboard TX wire | |
 | Keyboard RX wire | |
 | Current, idle | |
@@ -121,9 +125,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | Current, keys held | |
 | TX idle voltage | |
 | TX voltage with a key held | |
-| Diode test, +12 V → GND (red → black) | |
-| Diode test, GND → +12 V | |
-| Diode test, GND → each data wire | |
+| Diode test, +12 V → GND (red → black) | OL |
+| Diode test, GND → +12 V | 771 mV |
+| Diode test, GND → each data wire | yellow (pin 1) OL; black (pin 4) 1027 mV |
 
 With these, the interface circuit in [hardware/README.md](../hardware/README.md) can be
 confirmed and the power budget checked: USB 2.0 gives 500 mA at 5 V, and the boost module turns
