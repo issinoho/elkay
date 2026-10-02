@@ -16,8 +16,12 @@ Record every result in the table at the end and commit it.
 - An RJ10 (4P4C) female-to-female coupler, 1:1 wiring
 - An RJ10 plug-to-plug flat cable with one end cut off and the four wires stripped
 - A breadboard or terminal block for the flat cable's wires; jumper wires
+- A 4P4C jack breakout board with screw terminals. They are often sold as "RJ9"; RJ9, RJ10 and
+  RJ22 all mean the same 7.7 mm, 4-contact handset jack. Not RJ11 or 6P6C, which is wider.
 
-The setup is: LK401 plug → coupler → flat cable → four bare wires.
+The first setup is: LK401 plug → coupler → flat cable → four bare wires. The flat cable's wires
+are fine and break easily, so once the breakout board has been mapped (section 2) the LK401
+plugs straight into it instead, and everything connects to its screw terminals.
 
 ## 1. Set the supply
 
@@ -57,6 +61,15 @@ Once the coupler has arrived, map through it too, before the keyboard is plugged
    probe and use it as a fine tip. Touch each socket contact and find its bare wire, as in
    step 2. Record the colours. This maps each keyboard pin to a colour, and shows whether the
    coupler is straight or crossed.
+
+Once the breakout board has arrived, map it before the keyboard goes near it. Boards label
+their terminals differently, and some number from the other end, so don't trust the labels:
+
+6. Plug the flat cable's plug into the board's jack.
+7. On continuity, find which screw terminal beeps with each colour. Using the keyboard pins from
+   step 5, label each terminal with its pin number and signal.
+8. Plug the LK401 into the board and repeat the pin 1 check from section 3, step 4, on the
+   20 MΩ range. If pin 1 still reads open, the coupler's contact is ruled out as the cause.
 
 ## 3. Find ground and +12 V (keyboard unpowered)
 
@@ -116,6 +129,8 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | Through coupler, keyboard pins 1–4 (colours) | 1 yellow, 2 green, 3 red, 4 black |
 | Coupler wiring (straight / crossed) | straight |
 | Pin 1 (yellow) resistance | OL to every other pin, both directions, on 20 MΩ |
+| Breakout board, terminal for pins 1–4 | |
+| Pin 1 resistance via breakout board | |
 | GND wire (colour) | green (keyboard pin 2) |
 | +12 V wire | red (keyboard pin 3) |
 | Keyboard TX wire | |
