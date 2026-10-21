@@ -90,9 +90,10 @@ as it would in a terminal. Everything is measured on the cut end of our own flat
      keyboard's chips.
 4. Red probe on GND, black probe on each outer wire in turn. The keyboard's output (pin 4)
    should show a diode drop. Its input (pin 1) may read OL: on our keyboard it read OL to every
-   other pin in both directions, in diode test and on the 20 MΩ range. Whether that is a
-   high-impedance input or an open wire is settled when the keyboard is first sent a command
-   (**verify**). A reading of 0 on any data wire is a short: stop.
+   other pin in both directions, in diode test and on the 20 MΩ range, through the coupler and
+   through the breakout board. Whether that is a high-impedance input or an open wire is
+   settled when the keyboard is first sent a command (**verify**). A reading of 0 on any data
+   wire is a short: stop.
 5. If the middle wires don't behave as in step 3, stop and record every pair's readings in both
    directions before powering anything.
 
@@ -129,8 +130,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | Through coupler, keyboard pins 1–4 (colours) | 1 yellow, 2 green, 3 red, 4 black |
 | Coupler wiring (straight / crossed) | straight |
 | Pin 1 (yellow) resistance | OL to every other pin, both directions, on 20 MΩ |
-| Breakout board, terminal for pins 1–4 | |
-| Pin 1 resistance via breakout board | |
+| Breakout board, terminal for pins 1–4 | 1 yellow, 2 green, 3 red, 4 black (labels match pin numbers); no shorts between terminals |
+| Diode test via breakout board, GND → pin 4 | 1028 mV (board contacts good) |
+| Pin 1 resistance via breakout board | OL to every other pin, both directions, on 20 MΩ; diode test GND → pin 1 OL (coupler ruled out) |
 | GND wire (colour) | green (keyboard pin 2) |
 | +12 V wire | red (keyboard pin 3) |
 | Keyboard TX wire | |
