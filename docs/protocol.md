@@ -25,8 +25,9 @@ secondary sources or memory and must be confirmed on this keyboard in Phase 3.
 
 ## Power-up
 
-On power-up, or after the host sends `FD` (power-up reset), the keyboard runs its self-test,
-flashes the LEDs, and sends four bytes:
+On power-up, or after the host sends `FD` (power-up reset), the keyboard runs its self-test
+and sends four bytes. It is said to flash the LEDs as well, but ours showed no flash and no beep
+when power was applied (**verify** with `FD`).
 
 | Byte | Meaning |
 |------|---------|

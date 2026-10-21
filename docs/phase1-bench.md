@@ -101,8 +101,10 @@ as it would in a terminal. Everything is measured on the cut end of our own flat
 
 1. Put the multimeter in **DC current (mA)** mode, in series between the supply's +12 V
    output and the +12 V pin. Connect the supply's ground to the GND pin.
-2. Power up. The keyboard should beep or click and flash its four LEDs, which is its self-test.
-3. Record the current at idle, the **peak** as the LEDs flash, and the current with keys held.
+2. Power up. Ours neither flashed its LEDs nor beeped. Press a key: it should click, because
+   keyclick is on by default, which shows the keyboard is running.
+3. Record the current at idle, the **peak** if the LEDs flash, and the current with a key held
+   down long enough to auto-repeat.
 4. If the supply's display blanks or the keyboard keeps restarting, the supply is hitting its
    3 W limit (about 250 mA at 12 V). Note it; the final MT3608 has more headroom.
 
@@ -137,9 +139,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | +12 V wire | red (keyboard pin 3) |
 | Keyboard TX wire | |
 | Keyboard RX wire | |
-| Current, idle | |
-| Current, LED flash peak | |
-| Current, keys held | |
+| Current, idle | 33.5–33.6 mA |
+| Current, LED flash peak | no LED flash or beep at power-up; highest seen 34.6 mA |
+| Current, keys held | 34.6 mA with one key held (auto-repeat clicks); a single press clicks once, +0.1 mA |
 | TX idle voltage | |
 | TX voltage with a key held | |
 | Diode test, +12 V → GND (red → black) | OL |
