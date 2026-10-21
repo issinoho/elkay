@@ -7,10 +7,12 @@ secondary sources or memory and must be confirmed on this keyboard in Phase 3.
 ## Physical layer
 
 - Asynchronous serial, **4800 baud, 8 data bits, no parity, 1 stop bit**, full duplex.
-- RS-423-style single-ended levels. The keyboard has only a +12 V supply, so its output cannot
-  swing negative; the real levels are measured in [Phase 1](phase1-bench.md).
-- Polarity is RS-232 style: idle (mark) is the *low* voltage, which is the opposite of a
+- RS-423 single-ended levels. The keyboard has only a +12 V supply but makes its own negative
+  rail: its output idles at −5.49 V ([Phase 1](phase1-bench.md)).
+- Polarity is RS-232 style: idle (mark) is the *negative* voltage, which is the opposite of a
   microcontroller UART, so both directions go through an inverter.
+- The keyboard's input sits at +2.37 V when nothing drives it. What levels it needs is not yet
+  known (**verify**).
 - Connector: 4P4C modular. Per `lkkbd.c`, looking at the plug with the cable downwards and the
   latch away from you, pins 1–4 left to right:
 
@@ -21,7 +23,9 @@ secondary sources or memory and must be confirmed on this keyboard in Phase 3.
   | 3 | +12 V |
   | 4 | Data **from** keyboard (host RX) |
 
-  Modular cables can be straight or reversed, so **verify** at the end of the cable we use.
+  Confirmed on our keyboard for pins 2–4, measured at its own plug. Pin 1 is data to the
+  keyboard by elimination, and is biased at +2.37 V when powered, but has not yet been sent a
+  command (**verify**).
 
 ## Power-up
 

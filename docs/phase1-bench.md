@@ -120,7 +120,9 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 3. Record the idle voltage of TX. It tells us:
    - idle near **0 V**, active high: RS-232 polarity, and the receive path needs an inverter
      (the expected case);
-   - idle near **+12 V** or +5 V: TTL polarity, and a resistor divider is enough.
+   - idle near **+12 V** or +5 V: TTL polarity, and a resistor divider is enough;
+   - idle **negative**: true RS-423, with a negative rail made inside the keyboard. Ours idles at
+     −5.49 V. The receive path still needs an inverter, and it must tolerate the negative swing.
 
 ## Results
 
@@ -137,13 +139,15 @@ Keyboard powered, multimeter in DC volts, black probe on GND:
 | Pin 1 resistance via breakout board | OL to every other pin, both directions, on 20 MΩ; diode test GND → pin 1 OL (coupler ruled out) |
 | GND wire (colour) | green (keyboard pin 2) |
 | +12 V wire | red (keyboard pin 3) |
-| Keyboard TX wire | |
-| Keyboard RX wire | |
+| Keyboard TX wire | black (pin 4): its voltage moves while a key auto-repeats |
+| Keyboard RX wire | yellow (pin 1), by elimination (**verify** with a command) |
 | Current, idle | 33.5–33.6 mA |
 | Current, LED flash peak | no LED flash or beep at power-up; highest seen 34.6 mA |
 | Current, keys held | 34.6 mA with one key held (auto-repeat clicks); a single press clicks once, +0.1 mA |
-| TX idle voltage | |
-| TX voltage with a key held | |
+| TX idle voltage | −5.49 V (pin 4, black) |
+| TX voltage with a key held | −5.16 V on average while auto-repeating |
+| Pin 1 voltage, powered and idle | +2.37 V (biased inside the keyboard, so probably not an open wire) |
+| +12 V at terminal 3, powered | 12.0 V |
 | Diode test, +12 V → GND (red → black) | OL |
 | Diode test, GND → +12 V | 771 mV |
 | Diode test, GND → each data wire | yellow (pin 1) OL; black (pin 4) 1027 mV |

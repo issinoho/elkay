@@ -2,9 +2,10 @@
 
 A separate inline box: a 4P4C socket for the LK401's own cable, and USB out to the host.
 
-> **Provisional.** The interface below assumes the keyboard's output idles near 0 V and swings
-> towards +12 V (RS-232 polarity, no negative rail). [Phase 1](../docs/phase1-bench.md)
-> measures this; revise the circuit before building if the measurements disagree.
+> **Provisional, and needs revising.** The interface below assumed the keyboard's output idles
+> near 0 V. [Phase 1](../docs/phase1-bench.md) found it idles at **−5.49 V** (true RS-423), and
+> that the keyboard's input sits at +2.37 V. The receive inverter needs protecting from the
+> negative swing, and the transmit side may need a negative idle level too.
 
 ## Block diagram
 
