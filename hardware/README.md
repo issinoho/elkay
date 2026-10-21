@@ -33,6 +33,10 @@ transmitter swings about ±5.4 V, the same as the keyboard's own output. Its rec
 ±25 V. Both directions invert, which is exactly what a UART needs, so no other parts are
 involved. The 12 V rail only powers the keyboard.
 
+"MAX3232" here means any 3232-type transceiver: they share the pinout below. Through-hole choices
+are the Maxim/ADI **MAX3232CPE+** and the Renesas **ICL3232CPZ** (both DIP-16). The Exar/Sipex
+SP3232EB is the same again.
+
 DIP-16 pinout, viewed from above with the notch at the top:
 
 ```
@@ -50,10 +54,10 @@ DIP-16 pinout, viewed from above with the notch at the top:
 
 | MAX3232 pin | Connect to |
 |-------------|------------|
-| 1 C1+, 3 C1− | 100 nF between them |
-| 4 C2+, 5 C2− | 100 nF between them |
-| 2 V+ | 100 nF to GND |
-| 6 V− | 100 nF to GND |
+| 1 C1+, 3 C1− | C1, 100 nF, between them |
+| 4 C2+, 5 C2− | C2, 470 nF–1 µF, between them |
+| 2 V+ | C3, 470 nF–1 µF, to GND |
+| 6 V− | C4, 470 nF–1 µF, to GND |
 | 16 VCC | Micro 5V, with 100 nF to GND right at the pin |
 | 15 GND | GND |
 | 11 T1IN | Micro D1 (TX1) |
@@ -63,8 +67,11 @@ DIP-16 pinout, viewed from above with the notch at the top:
 | 10 T2IN | GND (unused input, don't leave it floating) |
 | 7, 8, 9 | not connected |
 
-Ceramic capacitors have no polarity. A MAX232 (not 3232) has the same pinout but needs 1 µF
-capacitors; mind the polarity if they are electrolytic.
+The capacitors are for a 5 V supply. 100 nF for all four is only enough at 3.3 V: the MAX3232
+datasheet (Table 2) and the ICL3232's (Table 6) both ask for C1 ≥ 0.1 µF and C2–C4 ≥ 0.47 µF to
+cover 3.0–5.5 V. Both allow C2–C4 to be larger without changing C1, but not C1 on its own. Use
+ceramics; they have no polarity. A MAX232 (not 3232)
+has the same pinout but needs 1 µF for all four, and swings about ±7.5 V.
 
 Levels at idle:
 
@@ -108,9 +115,10 @@ The LEDs haven't been lit yet; measure again once `13 8F` turns them all on.
 | Qty | Part | Notes |
 |-----|------|-------|
 | 1 | Arduino Micro (A000053) | Teensy 2.0 is a drop-in alternative |
-| 1 | MAX3232, DIP-16 | buy a spare; from a distributor, as fakes are common |
-| 5 | 100 nF ceramic capacitor | 4 for the charge pump, 1 to decouple VCC |
-| 1 | 16-pin DIP socket | optional |
+| 2 | MAX3232CPE+ or Renesas ICL3232CPZ, DIP-16 | Mouser 700-MAX3232CPE; ICL3232CPZ is RS 196-7994 (pack of 5) or 196-7993 |
+| 2 | 100 nF ceramic capacitor | C1, and VCC decoupling; TDK FG28X7R1H104KNT00, RS 194-0538 |
+| 3 | 1 µF ceramic capacitor, 16 V or more | C2–C4; anything from 470 nF up, X7R or X5R; Murata RCER71H105K2K1H03B, RS 811-8364 |
+| 1 | 16-pin DIP socket, 0.3" | optional; RS PRO turned pin, RS 183-1561 |
 | 1 | MT3608 5 V → 12 V boost module | set to 12.0 V before connecting |
 | 1 | 4P4C (RJ9/RJ10) PCB socket or breakout board | takes the LK401's cable |
 | 1 | 470 µF 25 V electrolytic | 12 V rail bulk capacitor |
@@ -118,6 +126,44 @@ The LEDs haven't been lit yet; measure again once `13 8F` turns them all on.
 | 1 | 500 mA polyfuse | on USB 5 V into the boost |
 | 1 | Enclosure | about 80 × 50 × 25 mm |
 | — | 24 MHz 8-channel USB logic analyser | test equipment, recommended; use with PulseView |
+
+## Sourcing
+
+Prices and stock were checked in October 2026 through search results, not the live pages, so
+check each listing before ordering. Mouser ships small UK orders from overseas by FedEx, which
+costs about as much as the parts, so **RS** is the preferred supplier (free UK delivery over
+£50 ex VAT; avoid 10-digit "Extended Range" stock numbers, which add £10 under £100). Farnell
+UK also stocks the MAX3232CPE+ (2519372) and ICL3232CPZ (1201546). Don't buy the transceiver
+from Amazon or eBay: fakes are common.
+
+### Breadboard stage (order now)
+
+| Qty | RS stock no. | Part | Use |
+|-----|--------------|------|-----|
+| 1 pack | 196-7994 | Renesas ICL3232CPZ, DIP-16, pack of 5 | transceiver |
+| 3 | 811-8364 | Murata RCER71H105K2K1H03B, 1 µF 50 V X7R, 5 mm | C2–C4 |
+| 3 | 194-0538 | TDK FG28X7R1H104KNT00, 100 nF 50 V X7R, 5 mm | C1, VCC decoupling, 12 V rail |
+| 1 | 183-1561 | RS PRO 16-way DIL socket, turned pin, 7.62 mm | final box only; optional |
+
+Fallbacks: RS PRO 1 µF 50 V X7R (180-5107; check its lead spacing), Vishay K104K15X7RF5TH5
+100 nF (852-3277). Any leaded X7R/X5R ceramic, 16 V or more, will do; avoid Y5V/Z5U, which lose
+most of their capacitance at 5 V. The equivalent Mouser parts were 700-MAX3232CPE,
+810-FG24X7R1H105KRT6 (1 µF), 80-C320C104K5R7301 (100 nF) and 517-4816-3004-CP (socket).
+
+### Final box (candidates, not yet decided)
+
+| RS stock no. | Part | Notes |
+|--------------|------|-------|
+| 166-9094 | Recom RS3-0512S, 5 V → 12 V, 3 W, 250 mA, SIP | could replace the MT3608: fixed 12 V, no trimmer. Isolated, so its output 0 V must be tied to GND. Check the datasheet that it's regulated before designing it in |
+| 270-7980 | Schurter PFRA.050 polyfuse, 500 mA hold, 60 V | on USB 5 V |
+| — | 470 µF 25 V radial electrolytic | any |
+| — | 2 × 17-way 2.54 mm female header | so the Micro is removable |
+| — | stripboard | cut to fit |
+| 331-6392 | RS PRO 4P4C (RJ10/RJ22) right-angle PCB jack | modular jack pins are usually staggered and may not fit stripboard; check the drawing, or mount the screw-terminal breakout board instead. Bel SS-6444-NF (477-359) is an alternative |
+| 493-5938 | Hammond 1591MBK, 85 × 56 × 25 mm, black ABS | buy once the stripboard layout shows it fits |
+
+The converter, polyfuse, capacitor and headers can go on the breadboard-stage order, which would
+probably take it over £50. Hold the jack and enclosure until the layout is drawn.
 
 ## Arduino Micro pins
 
