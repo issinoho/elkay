@@ -20,7 +20,7 @@ LK401 ──4P4C──▶ ┌──────────────── el
 | Phase | What | State |
 |-------|------|-------|
 | 1 | Characterise the keyboard: pinout, current draw, signal levels ([procedure](docs/phase1-bench.md)) | done; pin 1 to confirm with a command |
-| 2 | Power and level-shifting circuit on a breadboard ([hardware](hardware/README.md)) | provisional design |
+| 2 | Power and level-shifting circuit on a breadboard ([hardware](hardware/README.md)) | MAX3232 design; parts to order |
 | 3 | Firmware: serial sniffer and command console, record every keycode | written, untested |
 | 4 | Firmware: initialisation (LK401 mode, up/down modes, LEDs, click, bell) | console commands in place |
 | 5 | Firmware: USB HID keyboard with LED feedback | — |
